@@ -6,8 +6,8 @@ const imageWrapper = Array.from(carouselContainer.children);
 const nextButton = document.querySelector(".button__next");
 const prevButton = document.querySelector(".button__prev");
 const imageWidth = 600;
-
-// arrange images next to one another
+const carouselNav = document.querySelector(".carousel-nav");
+const dots = Array.from(carouselNav.children);
 function setImagePosition(image, index) {
   image.style.left = imageWidth * index + "px";
 }
@@ -19,9 +19,10 @@ imageWrapper.forEach((image, index) => {
 nextButton.addEventListener("click", (e) => {
   const currentImage = document.querySelector(".current-wrapper");
   const nextImage = currentImage.nextElementSibling;
+  const prevDot = document.querySelector(".current-dot");
+  const currentDot = prevDot.nextElementSibling;
   if (!nextImage) {
     for (i = 0; i < imageWrapper.length - 1; i++) {
-      console.log("sliding because no next");
       imageWrapper.forEach((image) => {
         slide(image, "prev");
       });
@@ -29,32 +30,12 @@ nextButton.addEventListener("click", (e) => {
     }
   } else {
     imageWrapper.forEach((image) => {
-      let totalChange = 0;
-      var transistionImage = setInterval(() => {
-        const change = 10;
-        totalChange += change;
-        let currentPos = parseInt(image.style.left);
-        let nextPos = currentPos - change;
-        image.style.left = nextPos + "px";
-        if (totalChange >= 600) {
-          clearInterval(transistionImage);
-        }
-      }, 10);
+      slide(image, "next");
     });
   }
   currentImage.classList.remove("current-wrapper");
   nextImage.classList.add("current-wrapper");
 });
-
-// prevButton.addEventListener("click", (e) => {
-//   const currentImage = document.querySelector(".current-wrapper");
-//   const nextImage = currentImage.nextElementSibling;
-//   imageWrapper.forEach((image) => {
-//     slide(image, "prev");
-//   });
-//   currentImage.classList.remove("current-wrapper");
-//   nextImage.classList.add("current-wrapper");
-// });
 
 function slide(image, dirn) {
   if (dirn == "prev") {
@@ -79,7 +60,6 @@ prevButton.addEventListener("click", (e) => {
   const currentImage = document.querySelector(".current-wrapper");
   const nextImage = currentImage.previousElementSibling;
   if (!nextImage) {
-      console.log("sliding because no next");
     for (i = 0; i < 2; i++) {
       imageWrapper.forEach((image) => {
         slide(image, "next");
@@ -88,17 +68,7 @@ prevButton.addEventListener("click", (e) => {
     }
   } else {
     imageWrapper.forEach((image) => {
-      let totalChange = 0;
-      var transistionImage = setInterval(() => {
-        const change = 10;
-        totalChange += change;
-        let currentPos = parseInt(image.style.left);
-        let nextPos = currentPos + change;
-        image.style.left = nextPos + "px";
-        if (totalChange >= 600) {
-          clearInterval(transistionImage);
-        }
-      }, 10);
+      slide(image, "prev");
     });
   }
   currentImage.classList.remove("current-wrapper");
